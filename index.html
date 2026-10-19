@@ -263,7 +263,7 @@
       <div id="album-photos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
 
-    <!-- CARRINHO DE COMPRAS DINÂMICO -->
+    <!-- CARRINHO -->
     <section id="cart-section" class="hidden max-w-4xl mx-auto space-y-8">
       <h2 class="text-2xl font-bold text-white flex items-center gap-3">🛍️ Carrinho de Fotos do Jogo</h2>
       <div id="cart-empty-state" class="hidden bg-neutral-900 border border-neutral-800 rounded-3xl p-12 text-center space-y-4">
@@ -372,50 +372,45 @@
       </div>
     </div>
 
-    <!-- SUBSEÇÃO: CONFIGURAÇÃO DE PREÇOS E PROMOÇÕES -->
+    <!-- CONFIGURAÇÃO DE PREÇOS -->
     <div id="admin-pricing-content" class="hidden max-w-2xl bg-neutral-900 p-6 rounded-3xl border border-neutral-800 space-y-6">
       <h3 class="text-lg font-bold text-white border-b border-neutral-800 pb-3">⚙️ Configuração de Preços e Pacotes Promocionais</h3>
-
       <form onsubmit="handleSavePricing(event)" class="space-y-4 text-xs">
         <div>
           <label class="block text-amber-400 font-bold mb-1">Preço Avulso por Foto (R$) *</label>
           <input id="price-single" type="number" step="0.50" required class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-neutral-100 font-bold">
-          <p class="text-[10px] text-neutral-500 mt-1">Preço padrão cobrado por 1 foto selecionada.</p>
         </div>
-
         <div class="border-t border-neutral-800 pt-4 space-y-3">
-          <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Pacote Médio (Ex: 3 fotos)</h4>
+          <h4 class="font-bold text-white uppercase text-[11px]">Pacote Médio</h4>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-neutral-400 mb-1">Quantidade de Fotos *</label>
+              <label class="block text-neutral-400 mb-1">Qtd Fotos *</label>
               <input id="pack-med-qty" type="number" required class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-neutral-100">
             </div>
             <div>
-              <label class="block text-neutral-400 mb-1">Valor Total do Pacote (R$) *</label>
+              <label class="block text-neutral-400 mb-1">Valor Total (R$) *</label>
               <input id="pack-med-price" type="number" step="0.50" required class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-neutral-100">
             </div>
           </div>
         </div>
-
         <div class="border-t border-neutral-800 pt-4 space-y-3">
-          <h4 class="font-bold text-white uppercase tracking-wider text-[11px]">Pacote Grande (Ex: 5+ fotos)</h4>
+          <h4 class="font-bold text-white uppercase text-[11px]">Pacote Grande</h4>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-neutral-400 mb-1">A partir de Quantas Fotos? *</label>
+              <label class="block text-neutral-400 mb-1">A partir de Qtd *</label>
               <input id="pack-large-qty" type="number" required class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-neutral-100">
             </div>
             <div>
-              <label class="block text-neutral-400 mb-1">Valor por Foto no Pacote (R$) *</label>
+              <label class="block text-neutral-400 mb-1">Valor Unitário (R$) *</label>
               <input id="pack-large-unit-price" type="number" step="0.50" required class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-neutral-100">
             </div>
           </div>
         </div>
-
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs transition-all">Salvar Tabela de Preços</button>
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs">Salvar Tabela de Preços</button>
       </form>
     </div>
 
-    <!-- FORMULÁRIO DE CRIAR ÁLBUM (2 OPÇÕES DE CARREGAMENTO) -->
+    <!-- CRIAR NOVO ÁLBUM -->
     <div id="admin-new-album-content" class="hidden max-w-2xl bg-neutral-900 p-6 rounded-3xl border border-neutral-800 space-y-4">
       <h3 class="text-lg font-bold text-white border-b border-neutral-800 pb-3">Criar Novo Álbum de Partida</h3>
       <form onsubmit="handleCreateAlbum(event)" class="space-y-4 text-xs">
@@ -438,7 +433,6 @@
           </div>
         </div>
         
-        <!-- OPÇÃO 1: CARREGAR DO COMPUTADOR OU TELEMÓVEL -->
         <div class="space-y-3 bg-neutral-950 p-4 rounded-2xl border border-neutral-800">
           <span class="text-amber-400 font-bold block text-xs border-b border-neutral-800 pb-2">📁 Opção 1: Enviar Arquivos Direto do PC</span>
           <div>
@@ -451,7 +445,6 @@
           </div>
         </div>
 
-        <!-- OPÇÃO 2: LINK / URL EXTERNA -->
         <div class="space-y-3 bg-neutral-950 p-4 rounded-2xl border border-neutral-800">
           <span class="text-amber-400 font-bold block text-xs border-b border-neutral-800 pb-2">🔗 Opção 2: Cole um Link da Web (URL)</span>
           <div>
@@ -460,10 +453,46 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs transition-all">Publicar Álbum no Site</button>
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-black text-xs">Publicar Álbum no Site</button>
       </form>
     </div>
   </main>
+
+  <!-- MODAL GERENCIADOR DE FOTOS DE UM ÁLBUM ESPECÍFICO -->
+  <div id="admin-album-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-neutral-950/95 backdrop-blur-md">
+    <div class="bg-neutral-900 border border-neutral-800 w-full max-w-4xl rounded-3xl p-6 space-y-6 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeAdminAlbumModal()" class="absolute top-4 right-4 text-neutral-500 hover:text-white font-bold text-lg">✕</button>
+
+      <div class="border-b border-neutral-800 pb-3">
+        <span class="text-xs font-bold text-amber-400 uppercase">Gerenciamento de Galeria</span>
+        <h3 id="admin-modal-album-title" class="text-xl font-bold text-white mt-0.5">Nome do Álbum</h3>
+      </div>
+
+      <!-- ADICIONAR NOVAS FOTOS AO ÁLBUM EXISTENTE -->
+      <div class="bg-neutral-950 p-4 rounded-2xl border border-neutral-800 space-y-3 text-xs">
+        <h4 class="font-bold text-amber-400 flex items-center gap-2">➕ Adicionar Mais Fotos a esta Partida</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-neutral-400 mb-1">📁 Fotos do Computador (Múltiplas)</label>
+            <input id="manage-photos-files" type="file" accept="image/*" multiple class="w-full text-neutral-400 text-xs">
+          </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">🔗 Ou cole o Link (URL)</label>
+            <input id="manage-photo-url" type="url" placeholder="https://..." class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-neutral-100">
+          </div>
+        </div>
+        <button onclick="handleAddPhotosToAlbum()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 rounded-xl font-bold text-xs shadow-md">Adicionar Fotos</button>
+      </div>
+
+      <!-- LISTA DE FOTOS DO ÁLBUM COM OPÇÃO DE REMOVER -->
+      <div class="space-y-3">
+        <h4 class="font-bold text-white text-xs">Fotos Cadastradas nesta Partida:</h4>
+        <div id="admin-modal-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL PREVIEW DA FOTO -->
   <div id="photo-preview-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-neutral-950/95 backdrop-blur-md">
@@ -504,7 +533,7 @@
     <p>© 2026 Thales Rocha Fotografia (@thalesfotografia07). Todos os direitos reservados.</p>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- SCRIPT COMPLETO -->
   <script>
     const ADMIN_PASS = 'thales2026';
 
@@ -538,6 +567,7 @@
     let purchasedPhotos = [];
     let currentAlbum = null;
     let selectedPhase = 'Todas';
+    let managingAlbumId = null;
 
     function saveAlbumsToStorage() {
       localStorage.setItem('thales_albums', JSON.stringify(albums));
@@ -568,7 +598,7 @@
 
       savePricingToStorage();
       updatePricingUI();
-      showToast('Tabela de preços e promoções atualizada!');
+      showToast('Tabela de preços atualizada!');
     }
 
     function switchViewMode(mode) {
@@ -806,7 +836,7 @@
       const photos = currentAlbum.photos.filter(p => selectedPhase === 'Todas' || p.phase === selectedPhase);
 
       if (photos.length === 0) {
-        grid.innerHTML = `<p class="col-span-3 text-center text-neutral-500 py-12 text-sm">Nenhum lance nesta fase.</p>`;
+        grid.innerHTML = `<p class="col-span-3 text-center text-neutral-500 py-12 text-sm">Nenum lance nesta fase.</p>`;
         return;
       }
 
@@ -1079,116 +1109,30 @@
               <p class="text-[10px] text-neutral-500">${alb.teams} • ${alb.date}</p>
             </div>
           </div>
-          <div class="flex items-center gap-3">
-            <span class="text-amber-400 font-bold">${alb.photos.length} fotos</span>
-            <button onclick="removeAlbum('${alb.id}')" class="p-1 text-neutral-500 hover:text-red-400 font-bold" title="Excluir Jogo">🗑</button>
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 font-bold mr-2">${alb.photos.length} fotos</span>
+            <button onclick="openAdminAlbumModal('${alb.id}')" class="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-xl text-[11px] font-bold flex items-center gap-1">🖼️ Gerenciar Fotos</button>
+            <button onclick="removeAlbum('${alb.id}')" class="p-1.5 text-neutral-500 hover:text-red-400 font-bold" title="Excluir Jogo Todo">🗑</button>
           </div>
         `;
         table.appendChild(row);
       });
     }
 
-    function removeAlbum(albumId) {
-      albums = albums.filter(a => a.id !== albumId);
-      saveAlbumsToStorage();
-      renderAdminDashboard();
-      renderAlbums();
-      showToast('Álbum removido.');
+    // ABRIR O MODAL DE GERENCIAR FOTOS DO ÁLBUM
+    function openAdminAlbumModal(albumId) {
+      managingAlbumId = albumId;
+      const album = albums.find(a => a.id === albumId);
+      if (!album) return;
+
+      document.getElementById('admin-modal-album-title').textContent = album.title;
+      renderAdminModalPhotos();
+
+      document.getElementById('admin-album-modal').classList.remove('hidden');
+      document.getElementById('admin-album-modal').classList.add('flex');
     }
 
-    function readFileAsDataURL(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function handleCreateAlbum(e) {
-      e.preventDefault();
-      const title = document.getElementById('new-alb-title').value;
-      const teams = document.getElementById('new-alb-teams').value;
-      const location = document.getElementById('new-alb-location').value || 'Campo de Várzea';
-      const date = document.getElementById('new-alb-date').value || new Date().toISOString().split('T')[0];
-      
-      const coverInput = document.getElementById('new-alb-cover-file');
-      const coverUrlInput = document.getElementById('new-alb-cover-url').value;
-      const photosInput = document.getElementById('new-alb-photos-files');
-
-      let coverImage = '';
-      let uploadedPhotos = [];
-
-      // Processar Capa
-      if (coverInput.files && coverInput.files.length > 0) {
-        coverImage = await readFileAsDataURL(coverInput.files[0]);
-      } else if (coverUrlInput) {
-        coverImage = coverUrlInput;
-      } else {
-        showToast('Por favor, envie uma foto de capa do PC ou insira o Link!');
-        return;
-      }
-
-      // Processar Fotos
-      if (photosInput.files && photosInput.files.length > 0) {
-        for (let i = 0; i < photosInput.files.length; i++) {
-          const fileData = await readFileAsDataURL(photosInput.files[i]);
-          uploadedPhotos.push({
-            id: `f-${Date.now()}-${i}`,
-            title: `Lance ${i + 1}`,
-            phase: '1º Tempo',
-            time: '10:00',
-            price: pricing.single,
-            resolution: '6000 x 4000 (24MP)',
-            imageUrl: fileData
-          });
-        }
-      } else {
-        uploadedPhotos.push({
-          id: `f-${Date.now()}`,
-          title: 'Lance Inicial da Partida',
-          phase: '1º Tempo',
-          time: '10:00',
-          price: pricing.single,
-          resolution: '6000 x 4000 (24MP)',
-          imageUrl: coverImage
-        });
-      }
-
-      const newAlbum = {
-        id: `alb-${Date.now()}`,
-        title,
-        teams,
-        location,
-        date,
-        coverImage,
-        photos: uploadedPhotos
-      };
-
-      albums.unshift(newAlbum);
-      saveAlbumsToStorage();
-      e.target.reset();
-      switchAdminTab('dashboard');
-      showToast('Partida e fotos publicadas com sucesso!');
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById('toast-box');
-      const msg = document.getElementById('toast-message');
-      msg.textContent = message;
-      toast.classList.remove('hidden');
-      toast.classList.add('flex');
-      setTimeout(() => {
-        toast.classList.add('hidden');
-        toast.classList.remove('flex');
-      }, 3500);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      updateUserInterface();
-      updatePricingUI();
-      renderAlbums();
-    });
-  </script>
-</body>
-</html>
+    function closeAdminAlbumModal() {
+      managingAlbumId = null;
+      document.getElementById('admin-album-modal').classList.add('hidden');
+      document.getElementById('admin-album-modal').classList.
