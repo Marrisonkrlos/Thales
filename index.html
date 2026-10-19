@@ -458,7 +458,7 @@
     </div>
   </main>
 
-  <!-- MODAL GERENCIADOR DE FOTOS DE UM ÁLBUM ESPECÍFICO -->
+  <!-- MODAL GERENCIADOR DE FOTOS DO ÁLBUM -->
   <div id="admin-album-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-neutral-950/95 backdrop-blur-md">
     <div class="bg-neutral-900 border border-neutral-800 w-full max-w-4xl rounded-3xl p-6 space-y-6 relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeAdminAlbumModal()" class="absolute top-4 right-4 text-neutral-500 hover:text-white font-bold text-lg">✕</button>
@@ -468,7 +468,6 @@
         <h3 id="admin-modal-album-title" class="text-xl font-bold text-white mt-0.5">Nome do Álbum</h3>
       </div>
 
-      <!-- ADICIONAR NOVAS FOTOS AO ÁLBUM EXISTENTE -->
       <div class="bg-neutral-950 p-4 rounded-2xl border border-neutral-800 space-y-3 text-xs">
         <h4 class="font-bold text-amber-400 flex items-center gap-2">➕ Adicionar Mais Fotos a esta Partida</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -484,12 +483,9 @@
         <button onclick="handleAddPhotosToAlbum()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 rounded-xl font-bold text-xs shadow-md">Adicionar Fotos</button>
       </div>
 
-      <!-- LISTA DE FOTOS DO ÁLBUM COM OPÇÃO DE REMOVER -->
       <div class="space-y-3">
         <h4 class="font-bold text-white text-xs">Fotos Cadastradas nesta Partida:</h4>
-        <div id="admin-modal-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          <!-- Renderizado via JS -->
-        </div>
+        <div id="admin-modal-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
       </div>
     </div>
   </div>
@@ -533,7 +529,7 @@
     <p>© 2026 Thales Rocha Fotografia (@thalesfotografia07). Todos os direitos reservados.</p>
   </footer>
 
-  <!-- SCRIPT COMPLETO -->
+  <!-- SCRIPT -->
   <script>
     const ADMIN_PASS = 'thales2026';
 
@@ -560,9 +556,28 @@
       }
     ];
 
-    let albums = JSON.parse(localStorage.getItem('thales_albums')) || DEFAULT_ALBUMS;
-    let pricing = JSON.parse(localStorage.getItem('thales_pricing')) || DEFAULT_PRICING;
-    let currentUser = JSON.parse(localStorage.getItem('thales_user')) || null;
+    let albums = DEFAULT_ALBUMS;
+    try {
+      const stored = localStorage.getItem('thales_albums');
+      if (stored) albums = JSON.parse(stored);
+    } catch (e) {
+      albums = DEFAULT_ALBUMS;
+    }
+
+    let pricing = DEFAULT_PRICING;
+    try {
+      const storedP = localStorage.getItem('thales_pricing');
+      if (storedP) pricing = JSON.parse(storedP);
+    } catch (e) {
+      pricing = DEFAULT_PRICING;
+    }
+
+    let currentUser = null;
+    try {
+      const storedU = localStorage.getItem('thales_user');
+      if (storedU) currentUser = JSON.parse(storedU);
+    } catch(e) {}
+
     let cart = [];
     let purchasedPhotos = [];
     let currentAlbum = null;
@@ -570,11 +585,17 @@
     let managingAlbumId = null;
 
     function saveAlbumsToStorage() {
-      localStorage.setItem('thales_albums', JSON.stringify(albums));
+      try {
+        localStorage.setItem('thales_albums', JSON.stringify(albums));
+      } catch (e) {
+        showToast('Aviso: Armazenamento cheio! Algumas fotos do PC eram muito pesadas.');
+      }
     }
 
     function savePricingToStorage() {
-      localStorage.setItem('thales_pricing', JSON.stringify(pricing));
+      try {
+        localStorage.setItem('thales_pricing', JSON.stringify(pricing));
+      } catch (e) {}
     }
 
     function updatePricingUI() {
@@ -663,7 +684,7 @@
       const team = document.getElementById('reg-team').value || 'Atleta';
 
       currentUser = { name, email, phone, team };
-      localStorage.setItem('thales_user', JSON.stringify(currentUser));
+      try { localStorage.setItem('thales_user', JSON.stringify(currentUser)); } catch(e){}
       updateUserInterface();
       closeAuthModal();
       showToast(`Cadastro realizado com sucesso, ${name}!`);
@@ -673,7 +694,7 @@
       e.preventDefault();
       const email = document.getElementById('login-email').value;
       currentUser = { name: email.split('@')[0].toUpperCase(), email, team: 'Atleta' };
-      localStorage.setItem('thales_user', JSON.stringify(currentUser));
+      try { localStorage.setItem('thales_user', JSON.stringify(currentUser)); } catch(e){}
       updateUserInterface();
       closeAuthModal();
       showToast(`Bem-vindo de volta, ${currentUser.name}!`);
@@ -681,7 +702,7 @@
 
     function handleLogout() {
       currentUser = null;
-      localStorage.removeItem('thales_user');
+      try { localStorage.removeItem('thales_user'); } catch(e){}
       updateUserInterface();
       showToast('Sessão encerrada.');
     }
@@ -836,7 +857,7 @@
       const photos = currentAlbum.photos.filter(p => selectedPhase === 'Todas' || p.phase === selectedPhase);
 
       if (photos.length === 0) {
-        grid.innerHTML = `<p class="col-span-3 text-center text-neutral-500 py-12 text-sm">Nenum lance nesta fase.</p>`;
+        grid.innerHTML = `<p class="col-span-3 text-center text-neutral-500 py-12 text-sm">Nenhum lance nesta fase.</p>`;
         return;
       }
 
@@ -1119,7 +1140,6 @@
       });
     }
 
-    // ABRIR O MODAL DE GERENCIAR FOTOS DO ÁLBUM
     function openAdminAlbumModal(albumId) {
       managingAlbumId = albumId;
       const album = albums.find(a => a.id === albumId);
@@ -1135,4 +1155,190 @@
     function closeAdminAlbumModal() {
       managingAlbumId = null;
       document.getElementById('admin-album-modal').classList.add('hidden');
-      document.getElementById('admin-album-modal').classList.
+      document.getElementById('admin-album-modal').classList.remove('flex');
+    }
+
+    function renderAdminModalPhotos() {
+      const album = albums.find(a => a.id === managingAlbumId);
+      const grid = document.getElementById('admin-modal-photos-grid');
+      grid.innerHTML = '';
+
+      if (!album || album.photos.length === 0) {
+        grid.innerHTML = `<p class="col-span-4 text-neutral-500 text-xs py-4">Nenhuma foto cadastrada neste álbum.</p>`;
+        return;
+      }
+
+      album.photos.forEach(photo => {
+        const item = document.createElement('div');
+        item.className = "relative bg-neutral-900 rounded-xl overflow-hidden border border-neutral-800 group";
+        item.innerHTML = `
+          <img src="${photo.imageUrl}" class="w-full h-28 object-cover">
+          <div class="p-2 flex justify-between items-center bg-neutral-950">
+            <span class="text-[10px] text-neutral-400 truncate max-w-[100px]">${photo.title}</span>
+            <button onclick="removeSinglePhoto('${photo.id}')" class="text-neutral-500 hover:text-red-400 font-bold text-xs" title="Excluir Foto">🗑</button>
+          </div>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    async function handleAddPhotosToAlbum() {
+      if (!managingAlbumId) return;
+      const album = albums.find(a => a.id === managingAlbumId);
+      if (!album) return;
+
+      const fileInput = document.getElementById('manage-photos-files');
+      const urlInput = document.getElementById('manage-photo-url').value;
+
+      if (fileInput.files && fileInput.files.length > 0) {
+        for (let i = 0; i < fileInput.files.length; i++) {
+          const fileData = await readFileAsDataURL(fileInput.files[i]);
+          album.photos.push({
+            id: `f-${Date.now()}-${i}`,
+            title: `Lance ${album.photos.length + 1}`,
+            phase: '1º Tempo',
+            time: '10:00',
+            price: pricing.single,
+            resolution: '6000 x 4000 (24MP)',
+            imageUrl: fileData
+          });
+        }
+        fileInput.value = '';
+      } else if (urlInput) {
+        album.photos.push({
+          id: `f-${Date.now()}`,
+          title: `Lance ${album.photos.length + 1}`,
+          phase: '1º Tempo',
+          time: '10:00',
+          price: pricing.single,
+          resolution: '6000 x 4000 (24MP)',
+          imageUrl: urlInput
+        });
+        document.getElementById('manage-photo-url').value = '';
+      } else {
+        showToast('Selecione arquivos do PC ou insira um link de foto!');
+        return;
+      }
+
+      saveAlbumsToStorage();
+      renderAdminModalPhotos();
+      renderAdminDashboard();
+      renderAlbums();
+      showToast('Novas fotos adicionadas com sucesso!');
+    }
+
+    function removeSinglePhoto(photoId) {
+      if (!managingAlbumId) return;
+      const album = albums.find(a => a.id === managingAlbumId);
+      if (!album) return;
+
+      album.photos = album.photos.filter(p => p.id !== photoId);
+      saveAlbumsToStorage();
+      renderAdminModalPhotos();
+      renderAdminDashboard();
+      renderAlbums();
+      showToast('Foto removida da partida.');
+    }
+
+    function removeAlbum(albumId) {
+      albums = albums.filter(a => a.id !== albumId);
+      saveAlbumsToStorage();
+      renderAdminDashboard();
+      renderAlbums();
+      showToast('Álbum removido.');
+    }
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleCreateAlbum(e) {
+      e.preventDefault();
+      const title = document.getElementById('new-alb-title').value;
+      const teams = document.getElementById('new-alb-teams').value;
+      const location = document.getElementById('new-alb-location').value || 'Campo de Várzea';
+      const date = document.getElementById('new-alb-date').value || new Date().toISOString().split('T')[0];
+      
+      const coverInput = document.getElementById('new-alb-cover-file');
+      const coverUrlInput = document.getElementById('new-alb-cover-url').value;
+      const photosInput = document.getElementById('new-alb-photos-files');
+
+      let coverImage = '';
+      let uploadedPhotos = [];
+
+      if (coverInput.files && coverInput.files.length > 0) {
+        coverImage = await readFileAsDataURL(coverInput.files[0]);
+      } else if (coverUrlInput) {
+        coverImage = coverUrlInput;
+      } else {
+        showToast('Envie uma foto de capa do PC ou insira o Link!');
+        return;
+      }
+
+      if (photosInput.files && photosInput.files.length > 0) {
+        for (let i = 0; i < photosInput.files.length; i++) {
+          const fileData = await readFileAsDataURL(photosInput.files[i]);
+          uploadedPhotos.push({
+            id: `f-${Date.now()}-${i}`,
+            title: `Lance ${i + 1}`,
+            phase: '1º Tempo',
+            time: '10:00',
+            price: pricing.single,
+            resolution: '6000 x 4000 (24MP)',
+            imageUrl: fileData
+          });
+        }
+      } else {
+        uploadedPhotos.push({
+          id: `f-${Date.now()}`,
+          title: 'Lance Inicial da Partida',
+          phase: '1º Tempo',
+          time: '10:00',
+          price: pricing.single,
+          resolution: '6000 x 4000 (24MP)',
+          imageUrl: coverImage
+        });
+      }
+
+      const newAlbum = {
+        id: `alb-${Date.now()}`,
+        title,
+        teams,
+        location,
+        date,
+        coverImage,
+        photos: uploadedPhotos
+      };
+
+      albums.unshift(newAlbum);
+      saveAlbumsToStorage();
+      e.target.reset();
+      switchAdminTab('dashboard');
+      showToast('Partida e fotos publicadas com sucesso!');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast-box');
+      const msg = document.getElementById('toast-message');
+      msg.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3500);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateUserInterface();
+      updatePricingUI();
+      renderAlbums();
+    });
+  </script>
+</body>
+</html>
